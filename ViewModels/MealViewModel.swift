@@ -14,7 +14,11 @@ class MealViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var error: String?
 
-    private let service = OpenAIService()
+    private let useCase: GenerateMealsUseCase
+
+    init(useCase: GenerateMealsUseCase) {
+        self.useCase = useCase
+    }
 
     func generateMeals(goal: String) async {
 
@@ -22,10 +26,9 @@ class MealViewModel: ObservableObject {
         error = nil
 
         do {
-            let result = try await service.generateMeals(prompt: goal)
+            let result = try await useCase.execute(goal: goal)
             self.meals = result
         } catch {
-            print("Error:", error)
             self.error = error.localizedDescription
         }
 

@@ -9,8 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @StateObject private var viewModel = MealViewModel()
+    @StateObject private var viewModel: MealViewModel
     @State private var goal: String = ""
+
+    // MARK: - Dependency Injection Setup
+    init() {
+        let service = OpenAIService()
+        let repository = MealRepositoryImpl(service: service)
+        let useCase = GenerateMealsUseCase(repository: repository)
+
+        _viewModel = StateObject(
+            wrappedValue: MealViewModel(useCase: useCase)
+        )
+    }
 
     var body: some View {
 
@@ -21,7 +32,7 @@ struct ContentView: View {
                 Text("NutriAI")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding(.top)
+                    .padding(.top, 10)
 
                 // MARK: Input Field
                 TextField("Enter your goal (e.g. fat loss, muscle gain)", text: $goal)
@@ -30,7 +41,6 @@ struct ContentView: View {
                     .cornerRadius(12)
                     .padding(.horizontal)
 
-                // MARK: Button
                 Button {
                     Task {
                         await viewModel.generateMeals(goal: goal)
@@ -69,7 +79,7 @@ struct ContentView: View {
                             MealCardView(meal: meal)
                         }
                     }
-                    .padding(.top)
+                    .padding(.top, 10)
                 }
 
                 Spacer()
