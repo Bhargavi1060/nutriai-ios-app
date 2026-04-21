@@ -17,6 +17,7 @@ class MealViewModel: ObservableObject {
     private let service = OpenAIService()
 
     func generateMeals(goal: String) async {
+
         isLoading = true
         error = nil
 
@@ -24,7 +25,8 @@ class MealViewModel: ObservableObject {
             let result = try await service.generateMeals(prompt: goal)
             self.meals = result
         } catch {
-            self.error = "Failed to generate meals"
+            print("Error:", error)
+            self.error = error.localizedDescription
         }
 
         isLoading = false

@@ -12,11 +12,7 @@ final class APIClient {
     static let shared = APIClient()
     private init() {}
 
-    func post<T: Decodable>(
-        url: URL,
-        body: [String: Any],
-        headers: [String: String]
-    ) async throws -> T {
+    func post(url: URL, body: [String: Any], headers: [String: String]) async throws -> Data {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -27,9 +23,13 @@ final class APIClient {
 
         guard let http = response as? HTTPURLResponse,
               200..<300 ~= http.statusCode else {
+
+            let errorText = String(data: data, encoding: .utf8) ?? "Unknown error"
+            print("API Error Response:", errorText)
+
             throw URLError(.badServerResponse)
         }
 
-        return try JSONDecoder().decode(T.self, from: data)
+        return data
     }
 }

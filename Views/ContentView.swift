@@ -57,9 +57,9 @@ struct ContentView: View {
                                     .font(.headline)
 
                                 HStack {
-                                    Text("🔥 \(meal.calories)")
-                                    Text("💪 \(meal.protein)g protein")
-                                    Text("🌾 \(meal.carbs)g carbs")
+                                    Text("Cal: \(meal.calories)")
+                                    Text("Pro: \(meal.protein)g protein")
+                                    Text("Carb: \(meal.carbs)g carbs")
                                 }
                                 .font(.caption)
                                 .foregroundColor(.gray)
