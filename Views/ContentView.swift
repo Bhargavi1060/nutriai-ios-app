@@ -10,65 +10,63 @@ import SwiftUI
 struct ContentView: View {
 
     @StateObject private var viewModel = MealViewModel()
-    @State private var goal: String = "Fitness"
+    @State private var goal: String = ""
 
     var body: some View {
 
         NavigationView {
             VStack(spacing: 16) {
 
-                // MARK: - Input Field
-                TextField("Enter your goal (e.g. lose weight)", text: $goal)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                // MARK: Title
+                Text("NutriAI")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top)
+
+                // MARK: Input Field
+                TextField("Enter your goal (e.g. fat loss, muscle gain)", text: $goal)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
                     .padding(.horizontal)
 
-                // MARK: - Generate Button
-                Button("Generate AI Meals") {
+                // MARK: Button
+                Button {
                     Task {
                         await viewModel.generateMeals(goal: goal)
                     }
+                } label: {
+                    Text("Generate AI Meals")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                        .padding(.horizontal)
                 }
-                .buttonStyle(.borderedProminent)
 
-                // MARK: - Loading State
+                // MARK: Loading State
                 if viewModel.isLoading {
                     ProgressView("Generating meals...")
                         .padding()
                 }
 
-                // MARK: - Error State
+                // MARK: Error State
                 if let error = viewModel.error {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.caption)
-                        .padding()
+                        .padding(.horizontal)
                 }
 
-                // MARK: - Meal Cards UI
+                // MARK: Meals List 
                 ScrollView {
 
-                    VStack(spacing: 12) {
+                    VStack(spacing: 14) {
 
                         ForEach(viewModel.meals) { meal in
-
-                            VStack(alignment: .leading, spacing: 8) {
-
-                                Text(meal.name)
-                                    .font(.headline)
-
-                                HStack {
-                                    Text("Cal: \(meal.calories)")
-                                    Text("Pro: \(meal.protein)g protein")
-                                    Text("Carb: \(meal.carbs)g carbs")
-                                }
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(12)
-                            .padding(.horizontal)
+                            MealCardView(meal: meal)
                         }
                     }
                     .padding(.top)
@@ -76,13 +74,10 @@ struct ContentView: View {
 
                 Spacer()
             }
-            .navigationTitle("NutriAI 🍎")
+            .navigationBarHidden(true)
         }
+        .animation(.easeInOut, value: viewModel.meals)
     }
-}
-
-#Preview {
-    ContentView()
 }
 
 #Preview {
