@@ -6,11 +6,19 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Meal: Identifiable {
-    let id = UUID()
-    let name: String
-    let calories: Int
-    let protein: Int
-    let carbs: Int
+@Model
+class Meal {
+    var name: String
+    var calories: Int
+    var protein: Int
+    var carbs: Int
+
+    init(name: String, calories: Int, protein: Int, carbs: Int) {
+        self.name = name
+        self.calories = calories
+        self.protein = protein
+        self.carbs = carbs
+    }
 }

@@ -12,15 +12,20 @@ class MealViewModel: ObservableObject {
 
     @Published var meals: [Meal] = []
     @Published var isLoading = false
+    @Published var error: String?
 
-    private let service = AIService()
+    private let service = OpenAIService()
 
-    func fetchMeals(goal: String) async {
-
+    func generateMeals(goal: String) async {
         isLoading = true
+        error = nil
 
-        let result = await service.getMeals(goal: goal)
-        self.meals = result
+        do {
+            let result = try await service.generateMeals(prompt: goal)
+            self.meals = result
+        } catch {
+            self.error = "Failed to generate meals"
+        }
 
         isLoading = false
     }
