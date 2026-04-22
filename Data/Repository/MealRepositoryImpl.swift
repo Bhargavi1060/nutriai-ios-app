@@ -3,11 +3,9 @@
 //  NutriAI
 //
 //  Created by Bhargavi M on 4/21/26.
-//
-
 import Foundation
 
-final class MealRepositoryImpl: MealRepository {
+class MealRepositoryImpl: MealRepository {
 
     private let service: OpenAIService
 
@@ -15,7 +13,7 @@ final class MealRepositoryImpl: MealRepository {
         self.service = service
     }
 
-    func generateMeals(goal: String) async throws -> [Meal] {
+    func generateMeals(goal: String) async throws -> [MealDTO] {
         return try await service.generateMeals(prompt: goal)
     }
 }

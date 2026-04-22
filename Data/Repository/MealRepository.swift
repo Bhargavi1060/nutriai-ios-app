@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MealRepository {
-    func generateMeals(goal: String) async throws -> [Meal]
+    func generateMeals(goal: String) async throws -> [MealDTO]
 }

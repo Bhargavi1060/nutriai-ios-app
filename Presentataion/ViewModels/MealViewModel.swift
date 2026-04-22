@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class MealViewModel: ObservableObject {
 
-    @Published var meals: [Meal] = []
+    @Published var meals: [MealDTO] = []
     @Published var isLoading = false
     @Published var error: String?
 
@@ -21,6 +21,8 @@ class MealViewModel: ObservableObject {
     }
 
     func generateMeals(goal: String) async {
+
+        print("🚀 Generating meals for:", goal)
 
         isLoading = true
         error = nil

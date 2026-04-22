@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MealCardView: View {
-    let meal: Meal
+    let meal: FavoriteMeal
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

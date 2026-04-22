@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class GenerateMealsUseCase {
+class GenerateMealsUseCase {
 
     private let repository: MealRepository
 
@@ -15,7 +15,7 @@ final class GenerateMealsUseCase {
         self.repository = repository
     }
 
-    func execute(goal: String) async throws -> [Meal] {
+    func execute(goal: String) async throws -> [MealDTO] {
         return try await repository.generateMeals(goal: goal)
     }
 }
