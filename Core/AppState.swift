@@ -12,6 +12,9 @@ class AppState: ObservableObject {
 
     let mealViewModel: MealViewModel
 
+    //Navigation control
+    @Published var goToMeals: Bool = false
+
     init() {
         let service = OpenAIService()
         let repository = MealRepositoryImpl(service: service)

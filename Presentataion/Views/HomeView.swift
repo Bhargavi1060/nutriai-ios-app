@@ -18,83 +18,38 @@ struct HomeView: View {
 
     var body: some View {
 
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
 
-            // HEADER SECTION
-            VStack(spacing: 8) {
+            Text("NutriAI")
+                .font(.largeTitle)
+                .bold()
 
-                Text("NutriAI")
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundColor(.primary)
+            TextField("Enter goal", text: $goal)
+                .textFieldStyle(.roundedBorder)
+                .padding()
 
-                Text("AI-powered meal planner for your fitness goals")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-            }
-            .padding(.top, 40)
-
-            // INPUT SECTION
-            VStack(alignment: .leading, spacing: 12) {
-
-                Text("Your Goal")
-                    .font(.headline)
-
-                TextField("e.g. fat loss, muscle gain", text: $goal)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-            }
-            .padding(.horizontal)
-
-            // BUTTON
             Button {
 
                 Task {
                     await viewModel.generateMeals(goal: goal)
+
+                    DispatchQueue.main.async {
+                        appState.goToMeals = true
+                    }
                 }
 
             } label: {
 
                 Text("Generate Meal Plan")
-                    .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(
-                        LinearGradient(
-                            colors: [.black, .gray],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .background(.black)
                     .foregroundColor(.white)
-                    .cornerRadius(14)
-                    .shadow(radius: 5)
+                    .cornerRadius(12)
             }
             .padding(.horizontal)
 
-            // LOADING
-            if viewModel.isLoading {
-                ProgressView("Creating your plan...")
-                    .padding()
-            }
-
-            // ERROR
-            if let error = viewModel.error {
-                Text(error)
-                    .foregroundColor(.red)
-                    .font(.caption)
-                    .padding(.horizontal)
-            }
-
             Spacer()
-
-            // FOOTER
-            Text("Personalized nutrition")
-                .font(.footnote)
-                .foregroundColor(.gray)
-                .padding(.bottom, 20)
         }
         .padding()
     }

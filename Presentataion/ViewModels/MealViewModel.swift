@@ -22,14 +22,19 @@ class MealViewModel: ObservableObject {
 
     func generateMeals(goal: String) async {
 
-        print("Generating meals for:", goal)
+        guard !goal.isEmpty else {
+            error = "Please enter a goal"
+            return
+        }
 
         isLoading = true
         error = nil
 
         do {
             let result = try await useCase.execute(goal: goal)
+
             self.meals = result
+
         } catch {
             self.error = error.localizedDescription
         }

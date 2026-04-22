@@ -9,29 +9,29 @@ import SwiftUI
 
 struct MainTabView: View {
 
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
 
-        TabView {
+        NavigationStack {
 
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
+            TabView {
 
-            MealsView()
-                .tabItem {
-                    Label("Meals", systemImage: "fork.knife")
-                }
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
 
-            FavoritesView()
-                .tabItem {
-                    Label("Favorites", systemImage: "heart.fill")
-                }
+                MealsView()
+                    .tabItem {
+                        Label("Meals", systemImage: "fork.knife")
+                    }
+            }
 
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
-                }
+            // NAVIGATION 
+            .navigationDestination(isPresented: $appState.goToMeals) {
+                MealsView()
+            }
         }
     }
 }
