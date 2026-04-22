@@ -17,26 +17,65 @@ struct MealsView: View {
 
     var body: some View {
 
-        ScrollView {
+        VStack(alignment: .leading, spacing: 16) {
 
-            VStack(spacing: 12) {
+            // HEADER
+            Text("Your AI Meal Plan")
+                .font(.largeTitle)
+                .bold()
+                .padding(.horizontal)
 
-                ForEach(viewModel.meals) { meal in
+            // EMPTY STATE
+            if viewModel.meals.isEmpty {
+                VStack(spacing: 12) {
+                    Image(systemName: "fork.knife")
+                        .font(.system(size: 40))
+                        .foregroundColor(.gray)
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(meal.name)
-                            .font(.headline)
+                    Text("No meals generated yet")
+                        .foregroundColor(.gray)
 
-                        Text("🔥 \(meal.calories) | 💪 \(meal.protein)g | 🌾 \(meal.carbs)g")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                    Text("Go to Home and create your meal plan")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .padding(.top, 60)
+
+            } else {
+
+                // MEAL LIST
+                ScrollView {
+
+                    VStack(spacing: 12) {
+
+                        ForEach(viewModel.meals) { meal in
+
+                            VStack(alignment: .leading, spacing: 8) {
+
+                                Text(meal.name)
+                                    .font(.headline)
+
+                                HStack(spacing: 12) {
+                                    Label("\(meal.calories)", systemImage: "flame.fill")
+                                    Label("\(meal.protein)g", systemImage: "bolt.fill")
+                                    Label("\(meal.carbs)g", systemImage: "leaf.fill")
+                                }
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                            .padding(.horizontal)
+                        }
                     }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .padding(.top, 10)
                 }
             }
-            .padding()
+
+            Spacer()
         }
+        .padding(.top)
     }
 }
