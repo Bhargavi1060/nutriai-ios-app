@@ -18,16 +18,49 @@ struct HomeView: View {
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        VStack(spacing: 24) {
 
-            Text("NutriAI")
-                .font(.largeTitle)
-                .bold()
+            // HEADER
+            VStack(spacing: 10) {
 
-            TextField("Enter goal", text: $goal)
-                .textFieldStyle(.roundedBorder)
-                .padding()
+                Text("NutriAI")
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
 
+                Text("Your AI-powered nutrition coach")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+
+                Text("Generate personalized meal plans instantly")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(
+                LinearGradient(
+                    colors: [Color.green.opacity(0.15), Color.blue.opacity(0.08)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .padding(.horizontal)
+
+            // GOAL SECTION
+            VStack(alignment: .leading, spacing: 10) {
+
+                Text("Your Goal")
+                    .font(.headline)
+
+                TextField("e.g. fat loss, muscle gain, high protein", text: $goal)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+            }
+            .padding(.horizontal)
+
+            // ACTION BUTTON
             Button {
 
                 Task {
@@ -40,17 +73,56 @@ struct HomeView: View {
 
             } label: {
 
-                Text("Generate Meal Plan")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.black)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                HStack {
+
+                    Image(systemName: "sparkles")
+                    Text("Generate Meal Plan")
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(
+                    LinearGradient(
+                        colors: [.black, .gray],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .foregroundColor(.white)
+                .cornerRadius(14)
+                .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
             }
             .padding(.horizontal)
 
+            // LOADING STATE
+            if viewModel.isLoading {
+                VStack(spacing: 8) {
+                    ProgressView()
+                    Text("Creating your personalized meal plan...")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .padding()
+            }
+
+            // ERROR STATE
+            if let error = viewModel.error {
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding(.horizontal)
+            }
+
             Spacer()
+
+            // FOOTER
+            VStack(spacing: 6) {
+                Text("AI Nutrition Engine")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.bottom, 10)
         }
-        .padding()
+        .padding(.top, 20)
     }
 }
