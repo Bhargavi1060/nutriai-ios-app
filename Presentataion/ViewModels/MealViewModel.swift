@@ -22,7 +22,7 @@ class MealViewModel: ObservableObject {
 
     func generateMeals(goal: String) async {
 
-        print("🚀 Generating meals for:", goal)
+        print("Generating meals for:", goal)
 
         isLoading = true
         error = nil

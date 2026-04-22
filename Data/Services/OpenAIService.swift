@@ -4,7 +4,7 @@ class OpenAIService {
 
     func generateMeals(prompt: String) async throws -> [MealDTO] {
 
-        print("🌐 API called with:", prompt)
+        print("API called with:", prompt)
 
         // MOCK (replace with real API later)
         return [
